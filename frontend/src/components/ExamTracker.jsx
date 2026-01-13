@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import StudyCardTimer from "./StudyCardTimer";
+import API_BASE_URL from "../api";
 
 function ExamTracker({ recordsRef, showCompleted }) {
 
@@ -21,7 +22,7 @@ function ExamTracker({ recordsRef, showCompleted }) {
 
   /* ================= FETCH RECORDS ON LOAD ================= */
   useEffect(() => {
-    fetch("http://localhost:5000/api/study")
+    fetch(`${API_BASE_URL}/api/study`)
       .then((res) => res.json())
       .then((data) => setRecords(data))
       .catch(() => console.error("Failed to fetch records"));
@@ -41,7 +42,7 @@ function ExamTracker({ recordsRef, showCompleted }) {
   const addStudyRecord = async (e) => {
     e.preventDefault();
 
-    const res = await fetch("http://localhost:5000/api/study", {
+    const res = await fetch(`${API_BASE_URL}/api/study`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData)
@@ -72,7 +73,7 @@ function ExamTracker({ recordsRef, showCompleted }) {
   const saveUpdate = async () => {
     const id = records[editIndex]._id;
 
-    const res = await fetch(`http://localhost:5000/api/study/${id}`, {
+    const res = await fetch(`${API_BASE_URL}/api/study/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(editData)
@@ -90,7 +91,7 @@ function ExamTracker({ recordsRef, showCompleted }) {
   const deleteRecord = async (index) => {
     const id = records[index]._id;
 
-    await fetch(`http://localhost:5000/api/study/${id}`, {
+    await fetch(`${API_BASE_URL}/api/study/${id}`, {
       method: "DELETE"
     });
 
@@ -107,7 +108,7 @@ function ExamTracker({ recordsRef, showCompleted }) {
     const updatedData = { ...record, syllabusStatus: newStatus };
 
     try {
-      const res = await fetch(`http://localhost:5000/api/study/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/study/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedData)
